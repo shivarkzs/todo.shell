@@ -12,7 +12,6 @@ Head "Downloading the component"
 cd /root/
 git clone https://github.com/shivarkzs/users.git &>>$LOG && cd users
 #rm -rf /etc/systemd/system/users.service
-mvn build &>> $LOG && mvn clean package &>>$LOG
 
 Head "Updating Endpoints"
 mv systemd.service /etc/systemd/system/users.service
