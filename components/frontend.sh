@@ -11,7 +11,7 @@ sudo apt install npm -y &>>$LOG
 Stat $?
 
 Head "Downloading COMPONENT"
-cd /var/www/html && git clone https://github.com/shivark.online/frontend.git &>>$LOG && cd frontend
+cd /var/www/html && git clone https://github.com/shivarkzs/frontend.git &>>$LOG && cd frontend
 
 Head "Building the Code"
 npm install &>>$LOG && npm run build &>>$LOG
