@@ -1,27 +1,33 @@
-#!/bin/bsah
-
+#!/bin/bash
 
 source components/common.sh
-
-DOMAIN="shivark.online"
-
 OS_PREREQ
 
-Head "Installing Golang"
+Head "Installing Dependency"
 apt install golang -y &>>$LOG
 Stat $?
 
-DOWNLOAD_COMPONENT
+Head "Downloading Component"
 
-Head "Extract Downloaded Archive"
-cd /home/ubuntu && rm -rf login && unzip -o /tmp/login.zip &>>$LOG && mv login-main login && cd /home/ubuntu/login && export GOPATH=/home/ubuntu/go && export GOBIN=$GOPATH/bin && go get &>>$LOG && go build
-Stat $?
+cd /root/
+rm -rf login
+git clone https://github.com/shivarkzs/login.git&>>$LOG && cd login
 
-Head "Update EndPoints in Service File"
-sed -i -e "s/user_endpoint/users.${DOMAIN}/" /home/ubuntu/login/systemd.service
-Stat $?
 
-Head "Setup SystemD Service"
-mv /home/ubuntu/login/systemd.service /etc/systemd/system/login.service && systemctl daemon-reload && systemctl start login && systemctl enable login &>>$LOG
+Head "Building Package"
+go build &>>$LOG
+
+Head "Get dependencies"
+go get github.com/dgrijalva/jwt-go &>>$LOG && go get github.com/labstack/echo &>>$LOG && go get github.com/labstack/echo/middleware &>>$LOG && go get github.com/labstack/gommon/log &>>$LOG && go get github.com/openzipkin/zipkin-go &>>$LOG && go get github.com/openzipkin/zipkin-go/middleware/http &>>$LOG && go get github.com/openzipkin/zipkin-go/reporter/http &>>$LOG
 Stat $?
+Head "Again Build"
+go build main.go user.go tracing.go &>>$LOG
+
+rm -rf /etc/systemd/system/login.service
+mv systemd.service /etc/systemd/system/login.service
+sed -i -e "s/USERS_ENDPOINT/users.shivark.online/" /etc/systemd/system/login.service
+
+Head "Restarting Services"
+systemctl daemon-reload &>>$LOG && systemctl start login && systemctl enable login &>>$LOG
+systemctl status login
 
