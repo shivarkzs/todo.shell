@@ -9,7 +9,7 @@ Stat $?
 
 Head "Downloading Component"
 
-cd /home/ubuntu
+cd /
 rm -rf login
 git clone https://github.com/shivarkzs/login.git&>>$LOG && cd login
 
