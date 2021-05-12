@@ -25,7 +25,7 @@ go build main.go user.go tracing.go &>>$LOG
 
 rm -rf /etc/systemd/system/login.service
 mv systemd.service /etc/systemd/system/login.service
-sed -i -e "s/USERS_ENDPOINT/users.shivark.online/" /etc/systemd/system/login.service
+sed -i -e "s/USER_ENDPOINT/users.shivark.online/" /etc/systemd/system/login.service
 
 Head "Restarting Services"
 systemctl daemon-reload &>>$LOG && systemctl start login && systemctl enable login &>>$LOG
