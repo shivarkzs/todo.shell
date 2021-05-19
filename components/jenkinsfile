@@ -1,0 +1,15 @@
+pipeline { 
+    ajent any 
+
+    steges {
+
+     steges ('prepare artifacts') {
+       steps {
+           sh '''
+           cd static
+           zip ../frontend.zip *
+           '''
+       }
+     }
+    }
+}
